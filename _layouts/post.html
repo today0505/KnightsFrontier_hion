@@ -1,0 +1,21 @@
+---
+layout: default
+---
+{% assign slug = page.categories | first %}
+{% assign c = site.data.categories | where: "slug", slug | first %}
+<article class="post">
+  <header class="post-head">
+    {% if c %}<a class="tag c-{{ c.slug }}" href="{{ '/' | append: c.slug | append: '/' | relative_url }}">{{ c.name }}</a>{% endif %}
+    <h1>{{ page.title }}</h1>
+    <time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%Y. %m. %d" }}</time>
+  </header>
+
+  <div class="content">
+    {{ content }}
+  </div>
+
+  <nav class="post-nav">
+    {% if page.previous %}<a href="{{ page.previous.url | relative_url }}">← {{ page.previous.title }}</a>{% else %}<span></span>{% endif %}
+    {% if page.next %}<a href="{{ page.next.url | relative_url }}">{{ page.next.title }} →</a>{% endif %}
+  </nav>
+</article>

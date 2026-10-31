@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="{{ site.lang }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% if page.title %}{{ page.title }} · {% endif %}{{ site.title }}</title>
+  <meta name="description" content="{{ page.excerpt | default: site.description | strip_html | normalize_whitespace | truncate: 160 }}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=JetBrains+Mono:wght@400;500;700&family=Noto+Sans+KR:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 fill=%22%2342533E%22/><rect x=%2230%22 y=%2230%22 width=%2240%22 height=%2240%22 fill=%22%23FFEFAE%22/></svg>">
+  {% feed_meta %}
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a class="brand" href="{{ '/' | relative_url }}"><span class="brand-mark"></span>{{ site.author }}<span class="cursor">_</span></a>
+      <nav class="nav" aria-label="메뉴">
+        {% for c in site.data.categories %}
+          <a href="{{ '/' | append: c.slug | append: '/' | relative_url }}"{% if page.cat == c.slug or page.categories contains c.slug %} class="active"{% endif %}>{{ c.name }}<small>{{ c.short }}</small></a>
+        {% endfor %}
+        <a href="{{ '/about/' | relative_url }}"{% if page.url == '/about/' %} class="active"{% endif %}>소개<small>ME</small></a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    {{ content }}
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <span>© {{ site.time | date: "%Y" }} {{ site.author | upcase }}. BUILT WITH CURIOSITY.</span>
+      <span>
+        <a href="https://github.com/{{ site.github }}">GITHUB</a> ·
+        <a href="{{ '/feed.xml' | relative_url }}">RSS</a>
+      </span>
+    </div>
+  </footer>
+</body>
+</html>

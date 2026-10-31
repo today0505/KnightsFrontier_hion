@@ -1,0 +1,46 @@
+---
+layout: default
+---
+<section class="hero">
+  <p class="eyebrow"><i></i>CURRENTLY LEARNING SECURITY</p>
+  <h1>{{ site.author }}</h1>
+  <p class="lead">{{ site.tagline }}</p>
+  <p class="hero-links">
+    <a class="btn" href="{{ '/about/' | relative_url }}">자기소개 보기</a>
+    <a class="btn ghost" href="https://github.com/{{ site.github }}">GitHub</a>
+  </p>
+</section>
+
+<section>
+  <h2 class="section-title">카테고리</h2>
+  <div class="cat-grid">
+    {% for c in site.data.categories %}
+      {% assign n = site.posts | where_exp: "p", "p.categories contains c.slug" | size %}
+      <a class="cat-card" href="{{ '/' | append: c.slug | append: '/' | relative_url }}">
+        <span class="chip c-{{ c.slug }}">{{ c.short }}</span>
+        <strong>{{ c.name }}</strong>
+        <span class="cat-desc">{{ c.desc }}</span>
+        <span class="cat-count">{% if n < 10 %}0{% endif %}{{ n }} POSTS</span>
+      </a>
+    {% endfor %}
+  </div>
+</section>
+
+<section>
+  <h2 class="section-title">최근 기록</h2>
+  {% if site.posts.size == 0 %}
+    <p class="empty">아직 글이 없어요.</p>
+  {% else %}
+    <ul class="post-list">
+      {% for post in site.posts limit: 8 %}
+        {% assign slug = post.categories | first %}
+        {% assign c = site.data.categories | where: "slug", slug | first %}
+        <li>
+          <time>{{ post.date | date: "%Y. %m. %d" }}</time>
+          <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
+          {% if c %}<span class="tag small c-{{ c.slug }}">{{ c.name }}</span>{% endif %}
+        </li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+</section>
