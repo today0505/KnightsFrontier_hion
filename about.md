@@ -29,7 +29,7 @@ permalink: /about/
 
     <p class="side-label">LEARNING SECURITY</p>
     <p class="side-name">원미혜</p>
-    <p class="side-nick">@hion</p>
+    <p class="side-nick">@광운대_원미혜(hion)</p>
 
     <div class="side-block">
       <p class="side-label">INTERESTS</p>
