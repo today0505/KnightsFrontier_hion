@@ -1,1 +1,1 @@
-<div class="note-status"><span>{{ include.left | default: "줄 1, 열 1" }}</span><span class="opt">100%</span><span class="opt">Windows (CRLF)</span><span>UTF-8</span></div>
+<div class="note-status"><span>{% unless include.nopos %}{{ include.left | default: "줄 1, 열 1" }}{% endunless %}</span><span class="opt">100%</span><span class="opt">Windows (CRLF)</span><span>UTF-8</span></div>

@@ -41,7 +41,7 @@ permalink: /about/
 
       <p class="side-links"><a href="https://github.com/{{ site.github }}" target="_blank" rel="noopener">→ GitHub</a></p>
     </div>
-    {% include note-status.html %}
+    {% include note-status.html nopos=true %}
   </aside>
 
   <div class="about-main content">

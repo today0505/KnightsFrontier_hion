@@ -15,9 +15,10 @@ layout: default
   <div class="note">
     {% include note-top.html file="hion.txt" %}
     <div class="note-body txt">
-      <p><span class="k">whoami</span>&nbsp;&nbsp;: <mark>{{ site.author }}</mark></p>
+      <p><span class="k">whoami</span>&nbsp;&nbsp;: 광운대학교 원미혜</p>
+      <p><span class="k">nick</span>&nbsp;&nbsp;&nbsp;&nbsp;: <mark>{{ site.author }}</mark></p>
       <p><span class="k">motto</span>&nbsp;&nbsp;&nbsp;: {{ site.tagline }}</p>
-      <p class="cats"><span class="k">ls</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: {% for c in site.data.categories %}<a href="{{ '/' | append: c.slug | append: '/' | relative_url }}" title="{{ c.name }}">{{ c.slug }}</a> {% endfor %}</p>
+      <p><span class="k">category</span>: {% for c in site.data.categories %}{{ c.slug }} {% endfor %}</p>
       <p><span class="k">posts</span>&nbsp;&nbsp;&nbsp;: {{ site.posts.size }}개</p>
       <p>&nbsp;</p>
       <p class="c">[최근 7일 동안 올린 글]</p>
@@ -55,6 +56,23 @@ layout: default
     });
     var empty = document.querySelector('.recent-empty');
     if (empty) empty.hidden = shown > 0;
+
+    // 상태 표시줄의 '줄 N'을 커서가 화면에서 실제로 놓인 줄 번호로 맞춤
+    // (화면 폭 때문에 두 줄로 꺾인 문장도 두 줄로 셈, 창 크기가 바뀌면 다시 셈)
+    var note = list.closest('.note');
+    var pos = note.querySelector('.note-status span');
+    function updateCaretLine() {
+      var rows = 0;
+      note.querySelectorAll('.note-body > p, .note-body li').forEach(function (el) {
+        if (el.hidden || getComputedStyle(el).display === 'none') return;
+        var lh = parseFloat(getComputedStyle(el).lineHeight) || 1;
+        rows += Math.max(1, Math.round(el.getBoundingClientRect().height / lh));
+      });
+      if (pos) pos.textContent = '줄 ' + rows + ', 열 1';
+    }
+    updateCaretLine();
+    window.addEventListener('resize', updateCaretLine);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(updateCaretLine);
   })();
 </script>
 
