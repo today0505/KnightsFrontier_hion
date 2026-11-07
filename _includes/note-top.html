@@ -1,0 +1,6 @@
+<div class="note-title">
+  <span class="note-tab"><i class="note-ico"></i><span class="note-file">{{ include.file }}</span><span class="note-x" aria-hidden="true">×</span></span>
+  <span class="note-plus" aria-hidden="true">+</span>
+  <span class="note-ctrl" aria-hidden="true"><b>─</b><b>☐</b><b>✕</b></span>
+</div>
+{% unless include.nomenu %}<div class="note-menu" aria-hidden="true"><span>파일</span><span>편집</span><span>보기</span></div>{% endunless %}

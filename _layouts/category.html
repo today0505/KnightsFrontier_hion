@@ -3,25 +3,33 @@ layout: default
 ---
 {% assign c = site.data.categories | where: "slug", page.cat | first %}
 {% assign posts = site.posts | where_exp: "p", "p.categories contains page.cat" %}
+{% capture c_file %}{{ c.slug }}.txt{% endcapture %}
+{% capture n_label %}{{ posts.size }}개의 글{% endcapture %}
 
 <section class="cat-head">
   <div>
-    <p class="prompt">INDEX / {{ c.short }}</p>
-    <h1>{{ c.name }}</h1>
+    <p class="label"><i class="note-ico"></i>{{ c_file }}</p>
+    <h1 class="glitch">{{ c.name }}</h1>
     <p class="lead">{{ c.desc }}</p>
   </div>
-  <span class="count-badge">{% if posts.size < 10 %}0{% endif %}{{ posts.size }} ARTICLES</span>
+  <span class="count-badge">{{ n_label }}</span>
 </section>
 
-{% if posts.size == 0 %}
-  <p class="empty">아직 글이 없어요. 첫 글을 기다리는 중…</p>
-{% else %}
-  <ul class="post-list">
-    {% for post in posts %}
-      <li>
-        <time>{{ post.date | date: "%Y. %m. %d" }}</time>
-        <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
-      </li>
-    {% endfor %}
-  </ul>
-{% endif %}
+<div class="note list-note">
+  {% include note-top.html file=c_file %}
+  <div class="note-body">
+    {% if posts.size == 0 %}
+      <p class="empty">아직 글이 없어요. 첫 글을 기다리는 중…<span class="caret"></span></p>
+    {% else %}
+      <ul class="post-list">
+        {% for post in posts %}
+          <li>
+            <time>{{ post.date | date: "%Y.%m.%d" }}</time>
+            <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
+          </li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+  </div>
+  {% include note-status.html left=n_label %}
+</div>

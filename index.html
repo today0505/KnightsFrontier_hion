@@ -2,45 +2,102 @@
 layout: default
 ---
 <section class="hero">
-  <p class="eyebrow"><i></i>CURRENTLY LEARNING SECURITY</p>
-  <h1>{{ site.author }}</h1>
-  <p class="lead">{{ site.tagline }}</p>
-  <p class="hero-links">
-    <a class="btn" href="{{ '/about/' | relative_url }}">자기소개 보기</a>
-    <a class="btn ghost" href="https://github.com/{{ site.github }}">GitHub</a>
-  </p>
+  <div>
+    <p class="label"><i class="note-ico"></i>whoami.txt</p>
+    <h1 class="glitch">{{ site.author }}</h1>
+    <span class="tag-ko">보안을 배우는 중</span>
+    <p class="hero-links">
+      <a class="btn" href="{{ '/about/' | relative_url }}">자기소개 보기</a>
+      <a class="btn ghost" href="https://github.com/{{ site.github }}" target="_blank" rel="noopener">GitHub</a>
+    </p>
+  </div>
+
+  <div class="note">
+    {% include note-top.html file="hion.txt" %}
+    <div class="note-body txt">
+      <p><span class="k">whoami</span>&nbsp;&nbsp;: <mark>{{ site.author }}</mark></p>
+      <p><span class="k">motto</span>&nbsp;&nbsp;&nbsp;: {{ site.tagline }}</p>
+      <p class="cats"><span class="k">ls</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: {% for c in site.data.categories %}<a href="{{ '/' | append: c.slug | append: '/' | relative_url }}" title="{{ c.name }}">{{ c.slug }}</a> {% endfor %}</p>
+      <p><span class="k">posts</span>&nbsp;&nbsp;&nbsp;: {{ site.posts.size }}개</p>
+      <p>&nbsp;</p>
+      <p class="c">[최근 7일 동안 올린 글]</p>
+      {% assign now_ts = site.time | date: "%s" | plus: 0 %}
+      {% assign cutoff = now_ts | minus: 604800 %}
+      {% assign recent_count = 0 %}
+      <ul class="recent7" data-recent>
+        {% for post in site.posts %}
+          {% assign ts = post.date | date: "%s" | plus: 0 %}
+          {% if ts >= cutoff %}
+            {% assign recent_count = recent_count | plus: 1 %}
+            <li data-ts="{{ ts }}"><span class="d">{{ post.date | date: "%m.%d" }}</span><a href="{{ post.url | relative_url }}">{{ post.title }}</a></li>
+          {% else %}
+            {% break %}
+          {% endif %}
+        {% endfor %}
+      </ul>
+      <p class="recent-empty"{% if recent_count > 0 %} hidden{% endif %}>- 최근 7일 동안 올라온 글이 없어요.</p>
+      <p><span class="caret"></span></p>
+    </div>
+    {% include note-status.html %}
+  </div>
 </section>
 
+<script>
+  // 사이트를 다시 빌드하지 않아도 '최근 7일'이 보는 날짜 기준으로 맞도록 오래된 글을 숨김
+  (function () {
+    var list = document.querySelector('[data-recent]');
+    if (!list) return;
+    var limit = Date.now() - 7 * 24 * 60 * 60 * 1000, shown = 0;
+    list.querySelectorAll('li').forEach(function (li) {
+      var old = Number(li.dataset.ts) * 1000 < limit;
+      li.hidden = old;
+      if (!old) shown++;
+    });
+    var empty = document.querySelector('.recent-empty');
+    if (empty) empty.hidden = shown > 0;
+  })();
+</script>
+
 <section>
-  <h2 class="section-title">카테고리</h2>
+  <h2 class="section-title"><i class="note-ico"></i>카테고리</h2>
   <div class="cat-grid">
     {% for c in site.data.categories %}
       {% assign n = site.posts | where_exp: "p", "p.categories contains c.slug" | size %}
-      <a class="cat-card" href="{{ '/' | append: c.slug | append: '/' | relative_url }}">
-        <span class="chip c-{{ c.slug }}">{{ c.short }}</span>
-        <strong>{{ c.name }}</strong>
-        <span class="cat-desc">{{ c.desc }}</span>
-        <span class="cat-count">{% if n < 10 %}0{% endif %}{{ n }} POSTS</span>
+      <a class="cat-card note" href="{{ '/' | append: c.slug | append: '/' | relative_url }}">
+        {% capture c_file %}{{ c.slug }}.txt{% endcapture %}
+        {% include note-top.html file=c_file nomenu=true %}
+        <div class="cat-body">
+          <span class="chip c-{{ c.slug }}">{{ c.short }}</span>
+          <strong>{{ c.name }}</strong>
+          <span class="cat-desc">{{ c.desc }}</span>
+        </div>
+        {% capture n_label %}{{ n }}개의 글{% endcapture %}
+        {% include note-status.html left=n_label %}
       </a>
     {% endfor %}
   </div>
 </section>
 
 <section>
-  <h2 class="section-title">최근 기록</h2>
-  {% if site.posts.size == 0 %}
-    <p class="empty">아직 글이 없어요.</p>
-  {% else %}
-    <ul class="post-list">
-      {% for post in site.posts limit: 8 %}
-        {% assign slug = post.categories | first %}
-        {% assign c = site.data.categories | where: "slug", slug | first %}
-        <li>
-          <time>{{ post.date | date: "%Y. %m. %d" }}</time>
-          <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
-          {% if c %}<span class="tag small c-{{ c.slug }}">{{ c.name }}</span>{% endif %}
-        </li>
-      {% endfor %}
-    </ul>
-  {% endif %}
+  <h2 class="section-title"><i class="note-ico"></i>최근 기록</h2>
+  <div class="note list-note">
+    {% include note-top.html file="recent.txt" nomenu=true %}
+    <div class="note-body">
+      {% if site.posts.size == 0 %}
+        <p class="empty">아직 글이 없어요. 첫 글을 기다리는 중…<span class="caret"></span></p>
+      {% else %}
+        <ul class="post-list">
+          {% for post in site.posts limit: 8 %}
+            {% assign slug = post.categories | first %}
+            {% assign c = site.data.categories | where: "slug", slug | first %}
+            <li>
+              <time>{{ post.date | date: "%Y.%m.%d" }}</time>
+              <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
+              {% if c %}<span class="tag small c-{{ c.slug }}">{{ c.short }}</span>{% endif %}
+            </li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    </div>
+  </div>
 </section>

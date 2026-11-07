@@ -7,16 +7,21 @@
   <meta name="description" content="{{ page.excerpt | default: site.description | strip_html | normalize_whitespace | truncate: 160 }}">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=JetBrains+Mono:wght@400;500;700&family=Noto+Sans+KR:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=JetBrains+Mono:wght@400;500;700;800&family=Noto+Sans+KR:wght@400;500;600;700&display=swap">
   <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 fill=%22%2342533E%22/><rect x=%2230%22 y=%2230%22 width=%2240%22 height=%2240%22 fill=%22%23FFEFAE%22/></svg>">
+  <meta name="theme-color" content="#F5F3ED">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect x=%2216%22 y=%228%22 width=%2268%22 height=%2284%22 rx=%228%22 fill=%22%23FFEFAE%22 stroke=%22%2342533E%22 stroke-width=%228%22/><rect x=%2230%22 y=%2230%22 width=%2240%22 height=%228%22 fill=%22%2342533E%22/><rect x=%2230%22 y=%2248%22 width=%2240%22 height=%228%22 fill=%22%2342533E%22/><rect x=%2230%22 y=%2266%22 width=%2224%22 height=%228%22 fill=%22%2342533E%22/></svg>">
   {% feed_meta %}
+  <script>document.documentElement.classList.add('js');</script>
 </head>
 <body>
   <header class="site-header">
     <div class="wrap header-inner">
-      <a class="brand" href="{{ '/' | relative_url }}"><span class="brand-mark"></span>{{ site.author }}<span class="cursor">_</span></a>
-      <nav class="nav" aria-label="메뉴">
+      <a class="brand" href="{{ '/' | relative_url }}"><i class="note-ico"></i>{{ site.author }}.txt<span class="dim">- 메모장</span></a>
+      <button class="menu-btn" type="button" aria-label="메뉴 열기" aria-expanded="false" aria-controls="site-nav">
+        <span></span><span></span><span></span>
+      </button>
+      <nav class="nav" id="site-nav" aria-label="메뉴">
         {% for c in site.data.categories %}
           <a href="{{ '/' | append: c.slug | append: '/' | relative_url }}"{% if page.cat == c.slug or page.categories contains c.slug %} class="active"{% endif %}>{{ c.name }}<small>{{ c.short }}</small></a>
         {% endfor %}
@@ -31,24 +36,27 @@
 
   <footer class="site-footer">
     <div class="wrap">
-      <span>© {{ site.time | date: "%Y" }} {{ site.author | upcase }}. BUILT WITH CURIOSITY.</span>
-      <span>
-        <a href="https://github.com/{{ site.github }}">GITHUB</a> ·
-        <a href="{{ '/feed.xml' | relative_url }}">RSS</a>
-      </span>
+      <span>© {{ site.time | date: "%Y" }} {{ site.author }}.txt</span>
+      <a href="https://github.com/{{ site.github }}" target="_blank" rel="noopener">GitHub</a>
+      <a href="{{ '/feed.xml' | relative_url }}">RSS</a>
+      <span>UTF-8</span>
     </div>
   </footer>
-    <script>
-    // 좁은 화면에서 메뉴 가로 스크롤: 현재 메뉴를 보이게 하고, 마우스 휠로도 좌우 이동
+  <script>
+    // 우측 메뉴 버튼(☰): 눌러서 메뉴 펼치기/접기. 링크 클릭, Esc, 바깥 클릭 시 닫힘
     (function () {
-      var nav = document.querySelector('.nav');
-      if (!nav) return;
-      var cur = nav.querySelector('a.active');
-      if (cur) cur.scrollIntoView({ inline: 'center', block: 'nearest' });
-      nav.addEventListener('wheel', function (e) {
-        if (nav.scrollWidth <= nav.clientWidth) return;
-        if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) { nav.scrollLeft += e.deltaY; e.preventDefault(); }
-      }, { passive: false });
+      var btn = document.querySelector('.menu-btn');
+      var header = document.querySelector('.site-header');
+      if (!btn || !header) return;
+      function setOpen(open) {
+        header.classList.toggle('menu-open', open);
+        btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+        btn.setAttribute('aria-label', open ? '메뉴 닫기' : '메뉴 열기');
+      }
+      btn.addEventListener('click', function () { setOpen(!header.classList.contains('menu-open')); });
+      document.addEventListener('keydown', function (e) { if (e.key === 'Escape') setOpen(false); });
+      document.addEventListener('click', function (e) { if (!header.contains(e.target)) setOpen(false); });
+      header.querySelectorAll('.nav a').forEach(function (a) { a.addEventListener('click', function () { setOpen(false); }); });
     })();
   </script>
 </body>

@@ -3,15 +3,23 @@ layout: default
 ---
 {% assign slug = page.categories | first %}
 {% assign c = site.data.categories | where: "slug", slug | first %}
+{% capture p_file %}{{ page.slug | default: "post" }}.txt{% endcapture %}
 <article class="post">
-  <header class="post-head">
-    {% if c %}<a class="tag c-{{ c.slug }}" href="{{ '/' | append: c.slug | append: '/' | relative_url }}">{{ c.name }}</a>{% endif %}
-    <h1>{{ page.title }}</h1>
-    <time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%Y. %m. %d" }}</time>
-  </header>
+  <div class="note">
+    {% include note-top.html file=p_file %}
+    <div class="note-body">
+      <header class="post-head">
+        {% if c %}<a class="tag c-{{ c.slug }}" href="{{ '/' | append: c.slug | append: '/' | relative_url }}">{{ c.name }}</a>{% endif %}
+        <h1>{{ page.title }}</h1>
+        <time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%Y.%m.%d" }}</time>
+      </header>
 
-  <div class="content">
-    {{ content }}
+      <div class="content">
+        {{ content }}
+      </div>
+    </div>
+    {% capture d_label %}{{ page.date | date: "%Y.%m.%d" }} 작성{% endcapture %}
+    {% include note-status.html left=d_label %}
   </div>
 
   <nav class="post-nav">

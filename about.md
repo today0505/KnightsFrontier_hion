@@ -6,16 +6,15 @@ permalink: /about/
 
 <section class="cat-head">
   <div>
-    <p class="prompt">INDEX / ME</p>
-    <h1>About</h1>
+    <p class="label"><i class="note-ico"></i>about.txt</p>
+    <h1 class="glitch">About</h1>
   </div>
 </section>
 
 <div class="about-grid">
-  <aside class="about-side">
-    <div class="side-top">HION.LOG / 025</div>
-
-    <div class="avatar-wrap">
+  <aside class="about-side note">
+    {% include note-top.html file="profile.txt" nomenu=true %}
+    <div class="note-body">
       <div class="avatar">
         {% assign photo = site.static_files | where: "path", "/assets/img/profile.jpg" | first %}
         {% if photo %}
@@ -24,24 +23,25 @@ permalink: /about/
           <span>hion</span>
         {% endif %}
       </div>
-      <span class="spark">✦</span>
+
+      <p class="side-label">LEARNING SECURITY</p>
+      <p class="side-name">원미혜</p>
+      <p class="side-nick">@광운대_원미혜(hion)</p>
+      <p class="side-nick">소속: 광운대학교</p>
+
+      <div class="side-block">
+        <p class="side-label">INTERESTS</p>
+        <div class="side-tags"><span>미정</span></div>
+      </div>
+
+      <div class="side-block">
+        <p class="side-label">ONE LINE</p>
+        <p class="side-quote">보안에 대해 아는 것은 적지만, 열심히 배우겠습니다! 잘 부탁드립니다!!</p>
+      </div>
+
+      <p class="side-links"><a href="https://github.com/{{ site.github }}" target="_blank" rel="noopener">→ GitHub</a></p>
     </div>
-
-    <p class="side-label">LEARNING SECURITY</p>
-    <p class="side-name">원미혜</p>
-    <p class="side-nick">@광운대_원미혜(hion)</p>
-
-    <div class="side-block">
-      <p class="side-label">INTERESTS</p>
-      <div class="side-tags"><span>미정</span></div>
-    </div>
-
-    <div class="side-block">
-      <p class="side-label">ONE LINE</p>
-      <p class="side-quote">보안에 대해 아는 것은 적지만, 열심히 배우겠습니다! 잘 부탁드립니다!!</p>
-    </div>
-
-    <p class="side-links"><a href="https://github.com/{{ site.github }}">GITHUB</a></p>
+    {% include note-status.html %}
   </aside>
 
   <div class="about-main content">
@@ -53,7 +53,7 @@ permalink: /about/
     </p>
     <h2>연락</h2>
     <ul>
-      <li>GitHub: <a href="https://github.com/{{ site.github }}">github.com/{{ site.github }}</a></li>
+      <li>GitHub: <a href="https://github.com/{{ site.github }}" target="_blank" rel="noopener">github.com/{{ site.github }}</a></li>
     </ul>
   </div>
 </div>

@@ -6,7 +6,7 @@ lang: ko
 author: "hion"
 github: "today0505"
 url: "https://today0505.github.io"
-# 저장소 이름이 knightsFrontier_hion 이므로 baseurl에 넣습니다. (<아이디>.github.io 저장소라면 비워 두세요.)
+# 저장소 이름과 대소문자까지 같아야 합니다. (<아이디>.github.io 저장소라면 비워 두세요.)
 baseurl: "/KnightsFrontier_hion"
 
 timezone: Asia/Seoul
